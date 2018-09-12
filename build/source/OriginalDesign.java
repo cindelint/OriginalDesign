@@ -23,36 +23,42 @@ int screen = 0;
 int shoot = 0;
 int angle = 0;
 float a = 0, b = 30.0f;
-int xPos = 200;
+int dtX = 200;
 float x = 200, y = 360;
 
 public void draw() {
   noStroke();
   for (int i=0; i<500; i++) {
-    fill(220+i/2, 67+i/3, 60-i*2);
+    fill(230+i/4, 60+i/3, 200-i/4);
     rect(250,i,500,1);
   }
 
   fill(124, 198, 105);
   rect(250,475,520,60);
-  dt(xPos,430);
+  dt(dtX,430);
   if (keyCode == UP || key == 'w') {
     screen = 1;
   }
   if (screen == 1) {
     ball();
   }
+  if (key == 'c') {
+    screen = 2;
+  }
+  if (screen == 2) {
+    ball();
+  }
 }
 
 public void keyPressed() {
   if (keyCode == LEFT || key == 'a') {
-    xPos-=10;
+    dtX-=10;
     if (screen == 0) {
       x-=10;
     }
   }
   if (keyCode == RIGHT || key == 'd') {
-    xPos+=10;
+    dtX+=10;
     if (screen == 0) {
       x+=10;
     }
@@ -104,7 +110,7 @@ public void ball() {
   //println("");
 }
 
-public void dt(float x, float y) {
+public void dt(float xPos, float yPos) {
   rectMode(CENTER);
   noStroke();
 
@@ -113,41 +119,49 @@ public void dt(float x, float y) {
     angle--;
     if (screen == 0) {
       a--;
+      b-=abs(angle/3);
+      x-=abs(angle/1.5f);
+      y+=abs(angle/2.5f);
     }
   }
   if (keyPressed && key == 'e' && angle<9) {
     angle++;
     if (screen == 0) {
       a++;
+      b-=abs(angle/3);
+      x+=abs(angle/1.5f);
+      y+=abs(angle/2.5f);
     }
   }
 
-  translate(x,y-12.5f);
+
+
+  translate(xPos,yPos-12.5f);
   rotate(angle*PI/30);
-  translate(-x,-y+12.5f);
+  translate(-xPos,-yPos+12.5f);
 
   fill(140, 140, 140);
-  rect(x,y-20,15,40);
+  rect(xPos,yPos-20,15,40);
   fill(120,120,120);
-  triangle(x-3,y,x+7.5f,y,x+7.5f,y-41);
+  triangle(xPos-3,yPos,xPos+7.5f,yPos,xPos+7.5f,yPos-41);
   popMatrix();
 
   fill(188, 9, 9);
-  rect(x,y,75,25);
+  rect(xPos,yPos,75,25);
   for (int i=-12; i<12; i++) {
     fill(188-i*6,9,9);
-    rect(x,y+i,75,1);
+    rect(xPos,yPos+i,75,1);
   }
 
   fill(124, 113, 113);
-  ellipse(x-26,y+13,20,20);
-  ellipse(x,y+13.5f,20,20);
-  ellipse(x+26,y+13,20,20);
+  ellipse(xPos-26,yPos+13,20,20);
+  ellipse(xPos,yPos+13.5f,20,20);
+  ellipse(xPos+26,yPos+13,20,20);
 
   fill(105, 96, 96);
-  arc(x-26,y+13,20,20,-PI/4-(200-xPos)*PI/60,3*PI/4-(200-xPos)*PI/60);
-  arc(x,y+13,20,20,-PI/4-(200-xPos)*PI/60,3*PI/4-(200-xPos)*PI/60);
-  arc(x+26,y+13,20,20,-PI/4-(200-xPos)*PI/60,3*PI/4-(200-xPos)*PI/60);
+  arc(xPos-26,yPos+13,20,20,-PI/4-(200-dtX)*PI/60,3*PI/4-(200-dtX)*PI/60);
+  arc(xPos,yPos+13,20,20,-PI/4-(200-dtX)*PI/60,3*PI/4-(200-dtX)*PI/60);
+  arc(xPos+26,yPos+13,20,20,-PI/4-(200-dtX)*PI/60,3*PI/4-(200-dtX)*PI/60);
 }
   public void settings() {  size(500,500); }
   static public void main(String[] passedArgs) {

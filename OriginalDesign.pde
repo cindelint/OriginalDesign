@@ -7,19 +7,19 @@ int screen = 0;
 int shoot = 0;
 int angle = 0;
 float a = 0, b = 30.0;
-int xPos = 200;
+int dtX = 200;
 float x = 200, y = 360;
 
 void draw() {
   noStroke();
   for (int i=0; i<500; i++) {
-    fill(220+i/2, 67+i/3, 60-i*2);
+    fill(230+i/4, 60+i/3, 200-i/4);
     rect(250,i,500,1);
   }
 
   fill(124, 198, 105);
   rect(250,475,520,60);
-  dt(xPos,430);
+  dt(dtX,430);
   if (keyCode == UP || key == 'w') {
     screen = 1;
   }
@@ -30,13 +30,13 @@ void draw() {
 
 void keyPressed() {
   if (keyCode == LEFT || key == 'a') {
-    xPos-=10;
+    dtX-=10;
     if (screen == 0) {
       x-=10;
     }
   }
   if (keyCode == RIGHT || key == 'd') {
-    xPos+=10;
+    dtX+=10;
     if (screen == 0) {
       x+=10;
     }
@@ -88,7 +88,7 @@ void ball() {
   //println("");
 }
 
-void dt(float x, float y) {
+void dt(float xPos, float yPos) {
   rectMode(CENTER);
   noStroke();
 
@@ -97,39 +97,47 @@ void dt(float x, float y) {
     angle--;
     if (screen == 0) {
       a--;
+      b-=abs(angle/3);
+      x-=abs(angle/1.5);
+      y+=abs(angle/2.5);
     }
   }
   if (keyPressed && key == 'e' && angle<9) {
     angle++;
     if (screen == 0) {
       a++;
+      b-=abs(angle/3);
+      x+=abs(angle/1.5);
+      y+=abs(angle/2.5);
     }
   }
 
-  translate(x,y-12.5);
+
+
+  translate(xPos,yPos-12.5);
   rotate(angle*PI/30);
-  translate(-x,-y+12.5);
+  translate(-xPos,-yPos+12.5);
 
   fill(140, 140, 140);
-  rect(x,y-20,15,40);
+  rect(xPos,yPos-20,15,40);
   fill(120,120,120);
-  triangle(x-3,y,x+7.5,y,x+7.5,y-41);
+  triangle(xPos-3,yPos,xPos+7.5,yPos,xPos+7.5,yPos-41);
   popMatrix();
 
   fill(188, 9, 9);
-  rect(x,y,75,25);
+  rect(xPos,yPos,75,25);
   for (int i=-12; i<12; i++) {
     fill(188-i*6,9,9);
-    rect(x,y+i,75,1);
+    rect(xPos,yPos+i,75,1);
   }
 
   fill(124, 113, 113);
-  ellipse(x-26,y+13,20,20);
-  ellipse(x,y+13.5,20,20);
-  ellipse(x+26,y+13,20,20);
+  ellipse(xPos-26,yPos+13,20,20);
+  ellipse(xPos,yPos+13.5,20,20);
+  ellipse(xPos+26,yPos+13,20,20);
 
   fill(105, 96, 96);
-  arc(x-26,y+13,20,20,-PI/4-(200-xPos)*PI/60,3*PI/4-(200-xPos)*PI/60);
-  arc(x,y+13,20,20,-PI/4-(200-xPos)*PI/60,3*PI/4-(200-xPos)*PI/60);
-  arc(x+26,y+13,20,20,-PI/4-(200-xPos)*PI/60,3*PI/4-(200-xPos)*PI/60);
+  arc(xPos-26,yPos+13,20,20,-PI/4-(200-dtX)*PI/60,3*PI/4-(200-dtX)*PI/60);
+  arc(xPos,yPos+13,20,20,-PI/4-(200-dtX)*PI/60,3*PI/4-(200-dtX)*PI/60);
+  arc(xPos+26,yPos+13,20,20,-PI/4-(200-dtX)*PI/60,3*PI/4-(200-dtX)*PI/60);
 }
