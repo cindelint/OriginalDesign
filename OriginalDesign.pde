@@ -36,10 +36,6 @@ void draw() {
     x = dtX;
     y = 360;
   }
-
-  println(angle);
-  println(a);
-  println("");
 }
 
 void keyPressed() {
