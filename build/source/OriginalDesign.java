@@ -27,26 +27,40 @@ int dtX = 200;
 float x = 200, y = 360;
 
 public void draw() {
+  //bg
   noStroke();
   for (int i=0; i<500; i++) {
     fill(230+i/4, 60+i/3, 200-i/4);
     rect(250,i,500,1);
   }
-
   fill(124, 198, 105);
   rect(250,475,520,60);
+
   dt(dtX,430);
+
   if (keyCode == UP || key == 'w') {
     screen = 1;
   }
   if (screen == 1) {
     ball();
   }
-  if (key == 'c') {
-    screen = 2;
-  }
-  if (screen == 2) {
-    ball();
+  int angleSum = 0;
+  if (key == 'r') {
+    screen = 0;
+    shoot = 0;
+    if (angle > 0) {
+      for (int i=0; i<angle; i++) {
+        angleSum += i;
+      }
+    } else {
+      for (int i=0; i>angle;i--) {
+        angleSum += i;
+      }
+    }
+    a = angleSum/3; //a should equal (1 + 2 + ... + angle)/3, or -(1 + 2 + ... + angle)/3
+    b = 30.0f;
+    x = dtX;
+    y = 360;
   }
 }
 
@@ -66,7 +80,6 @@ public void keyPressed() {
 }
 
 public void ball() {
-
   fill(0xffFFF534);
   noStroke();
   ellipse(x,y,30,30);
@@ -104,10 +117,6 @@ public void ball() {
     }
   }
   x+=a;
-  //println("screen value is " + screen);
-  //println("y value is " + y);
-  //println("b value is " + b);
-  //println("");
 }
 
 public void dt(float xPos, float yPos) {
@@ -118,8 +127,8 @@ public void dt(float xPos, float yPos) {
   if (keyPressed && key == 'q' && angle>-9) {
     angle--;
     if (screen == 0) {
-      a--;
-      b-=abs(angle/3);
+      a-=abs(angle/3);
+      b-=abs(angle/2.6f);
       x-=abs(angle/1.5f);
       y+=abs(angle/2.5f);
     }
@@ -127,14 +136,12 @@ public void dt(float xPos, float yPos) {
   if (keyPressed && key == 'e' && angle<9) {
     angle++;
     if (screen == 0) {
-      a++;
-      b-=abs(angle/3);
+      a+=abs(angle/3);
+      b-=abs(angle/2.6f);
       x+=abs(angle/1.5f);
       y+=abs(angle/2.5f);
     }
   }
-
-
 
   translate(xPos,yPos-12.5f);
   rotate(angle*PI/30);

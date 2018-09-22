@@ -28,10 +28,20 @@ void draw() {
   if (screen == 1) {
     ball();
   }
+  int angleSum = 0;
   if (key == 'r') {
     screen = 0;
     shoot = 0;
-    a = angle/3; //a should equal (1 + 2 + ... + angle)/3, or -(1 + 2 + ... + angle)/3
+    if (angle > 0) {
+      for (int i=0; i<angle; i++) {
+        angleSum += i;
+      }
+    } else {
+      for (int i=0; i>angle;i--) {
+        angleSum += i;
+      }
+    }
+    a = angleSum/3; //a should equal (1 + 2 + ... + angle)/3, or -(1 + 2 + ... + angle)/3
     b = 30.0;
     x = dtX;
     y = 360;
